@@ -5,7 +5,9 @@
  */
 
 package server;
+import client.Packet;
 import java.io.*;
+import java.sql.*;
 import java.util.*;
 import java.net.*;
 /**
@@ -19,6 +21,7 @@ public class DataTransform
     public static String packet = new String(); // This variable stores the transformed packet
     public static LinkedList l;
     public static Socket s2;
+    static String p[] = new String[50];
     
     /**
      * Constructor to create an object of class DataTransform
@@ -755,9 +758,44 @@ public class DataTransform
         s2 = s;
     }
     
-    public void transformDataset()
+    public void transformDataset()throws Exception
     {
+        String line,temp;
         
+        java.util.Date date= new java.util.Date();
+        Timestamp currentTimestamp= new Timestamp(date.getTime());
+        System.out.println(currentTimestamp);
+        
+        //Read the Training data set and transform it
+        //Store the transformed dataset in a new text file
+        
+        File file = new File("KDDTrain+_20Percent.txt");
+        BufferedReader br = new BufferedReader(new FileReader(file.getCanonicalPath()));
+        while((line = br.readLine()) != null)
+        {
+            int i=0;
+            StringTokenizer st  = new StringTokenizer(line," ",true);
+            while(st.hasMoreElements())
+            {
+                temp = st.nextElement().toString();
+                if(temp.equals(" ")){continue;}
+                else
+                {
+                    p[i] = temp;
+                    i++;
+                }
+            }
+            client.Packet packet = new client.Packet(p);
+            temp = transformPacket(packet);
+            BufferedWriter out = new BufferedWriter(new FileWriter("transformedDataset.txt", true));  
+            out.append(temp);
+            out.newLine();
+            out.close();
+        }
+        
+        java.util.Date date1= new java.util.Date();
+        Timestamp finalTimestamp= new Timestamp(date1.getTime());
+        System.out.println(finalTimestamp);
     }
             
     

@@ -22,6 +22,9 @@ public class Server {
      */
     public static void main(String[] args)throws Exception
     {
+        DataTransform dt = new DataTransform();
+        dt.transformDataset();
+        System.out.println("DataSet transformed");
         ServerSocket s = new ServerSocket(6789); 
         while(true)
         {
@@ -33,11 +36,8 @@ public class Server {
             if(packetSize(p)==41)
             {
                 //Data Transformation of live packet                
-                DataTransform dt = new DataTransform();
                 dt.getSocketConnection(s1);
                 String packet = dt.transformPacket(p);
-                //File file = new File("output.txt");
-                //br = new BufferedReader(new FileReader(file.getCanonicalPath()));
                 BufferedWriter out = new BufferedWriter(new FileWriter("output.txt", true));  
                 out.append(packet);
                 out.newLine();
