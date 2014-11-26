@@ -765,6 +765,7 @@ public class DataTransform
         java.util.Date date= new java.util.Date();
         Timestamp currentTimestamp= new Timestamp(date.getTime());
         System.out.println(currentTimestamp);
+        System.out.println("Please wait Dataset is being transformed");
         
         //Read the Training data set and transform it
         //Store the transformed dataset in a new text file

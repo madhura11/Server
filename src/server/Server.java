@@ -23,11 +23,18 @@ public class Server {
     public static void main(String[] args)throws Exception
     {
         DataTransform dt = new DataTransform();
-        dt.transformDataset();
-        System.out.println("DataSet transformed");
+        File file = new File("transformedDataset.txt");
+        BufferedReader br = new BufferedReader(new FileReader(file.getCanonicalPath()));
+        String line = br.readLine();
+        if(line==null)
+        {
+            dt.transformDataset();
+            System.out.println("DataSet transformed");
+        }
         ServerSocket s = new ServerSocket(6789); 
         while(true)
         {
+            System.out.println("Listening....");
             Socket s1=s.accept();
             InputStream is = s1.getInputStream();
             ObjectInputStream ois = new ObjectInputStream(is);
